@@ -40,6 +40,7 @@ Content-Type: application/json
 
 
 ### Get all tickets
+
 GET /api/v1/tickets HTTP/1.1
 Host: localhost:8080
 Accept: application/json
@@ -47,24 +48,63 @@ Accept: application/json
 
 
 ### POST ticket
+
 POST /api/v1/tickets HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
 
 {
     
-    "owner_id":1,
-    "recipient_id":1,
+    "ownerId":1,
+    "recipientId":1,
     "object":"TESTE",
     "action":"TESTE",
     "details":"kahhfjlhajfhajkfh",
     "local":"TESTE"
 }
 
-PATCH /api/v1/tickets HTTP/1.1
+### Patch Ticket
+
+PATCH /api/v1/tickets/8 HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
 
 {
-    
+    "managerId":1,
+    "status":"CANCELED",
+    "cancelReason":"TESTE"
+}
+
+### Patch Ticket NOT FOUND
+
+PATCH /api/v1/tickets/9999999 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "managerId":1,
+    "status":"CANCELED",
+    "cancelReason":"TESTE"
+}
+
+### Patch Ticket STATUS INVALID
+
+PATCH /api/v1/tickets/9 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "managerId":1,
+    "status":"fjasfjkalfahfjahfja"
+}
+
+### Patch Ticket STATUS Valid
+
+PATCH /api/v1/tickets/3 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "managerId":2,
+    "status":"doing"
 }

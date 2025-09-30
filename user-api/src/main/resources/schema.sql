@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS tickets (
     action TEXT NOT NULL,
     details TEXT NOT NULL,
     local TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'todo',
+    status TEXT NOT NULL DEFAULT 'TODO',
     cancel_reason TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

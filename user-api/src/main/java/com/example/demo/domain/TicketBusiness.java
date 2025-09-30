@@ -1,6 +1,8 @@
 package com.example.demo.domain;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Optional;
 
 import org.springframework.validation.annotation.Validated;
 
@@ -31,34 +33,57 @@ public class TicketBusiness {
         this.userRepository = userRepository;
     }
 
-    public void createTicket(@Valid NewTicketDTO newTicket){
+    public Ticket createTicket(@Valid NewTicketDTO newTicket){
         var ticket = new Ticket();
-        var observers=new HashSet<User>();
-        var owner = userRepository.findById(newTicket.owner_id());
-        if(owner.isEmpty()){
-            throw new IllegalArgumentException("Owner não encontrado");
-        }
-        ticket.setOwner(owner.get());
-        observers.add(owner.get());
-        if(newTicket.recipient_id() != null){
-            var recipient = userRepository.findById(newTicket.recipient_id());
-            if(recipient.isEmpty()) {
-                throw new IllegalArgumentException("Recipient não encontrado");
-            }
-            ticket.setRecipient(recipient.get());
-            observers.add(recipient.get());
-        } else{
-            ticket.setRecipient(owner.get());
-        }
+        
+        var owner = userRepository.findById(newTicket.ownerId()).orElseThrow(() ->
+            new IllegalArgumentException("Owner não encontrado")
+        );
+        
+        ticket.setOwner(owner);
+        ticket.setRecipient(owner);
+        // observers.add(owner);
+
+        newTicket.recipientId().ifPresent(id -> {
+            var recipient = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Recipient não encontrado"));
+            ticket.setRecipient(recipient);
+        });
+
         ticket.setAction(newTicket.action());
         ticket.setDetails(newTicket.details());
         ticket.setObject(newTicket.object());
         ticket.setLocal(newTicket.local());
-        ticket.setStatus(Ticket.Status.todo);
-        ticketRepository.save(ticket);
+        
+        return ticketRepository.save(ticket);
     }
 
-    public void patchTicket(@Valid PatchTicketDTO patchTicket){
+    public Ticket patchTicket(Integer ticketId,@Valid PatchTicketDTO patchTicket){
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() ->
+            new IllegalArgumentException("Ticket com Id " +ticketId+" não encontrado"));
+
+        if (ticket.isCanceled())
+            throw new IllegalArgumentException("Ticket Já foi cancelado e não pode ser alterado");
         
+        var managerId = patchTicket.managerId();
+        User manager = userRepository.findById(managerId).orElseThrow(() ->
+            new IllegalArgumentException("managerId não existe"));
+
+        
+        var status = Ticket.Status.parse(patchTicket.status())
+            .orElseThrow(()-> new IllegalArgumentException("Status Inválido"));        
+
+        if (status == Ticket.Status.CANCELED && patchTicket.cancelReason().isEmpty()){
+            throw new IllegalArgumentException("Caso Status cancelled enviar cancelReason");
+        }
+        
+        ticket.setCancelReason(patchTicket.cancelReason().get());
+        ticket.setManager(manager);
+        ticket.setStatus(status);
+        ticket.setUpdatedAt(LocalDateTime.now());
+        
+        System.out.println(ticket.getObservers());
+        
+        return ticketRepository.save(ticket);
     }
 }

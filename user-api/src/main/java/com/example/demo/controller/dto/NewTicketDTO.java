@@ -1,14 +1,7 @@
 package com.example.demo.controller.dto;
 
-/*
- * -- C -> Mother of All Languages
- * -- Turing Complete Language
- * -- LINGUAGEM DECLARATIVA (linguagem de pedidos)
- * CREATE TABLE users (
- *      name VARCHAR(20) NOT NULL CHECK LEN(name) >= 3 
- * )
- */
 
+import java.util.Optional;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -19,9 +12,9 @@ import jakarta.validation.constraints.NotNull;
 public record NewTicketDTO(
 
         @NotNull(message = "O dono é obrigatório")
-        Integer owner_id,
+        Integer ownerId,
 
-        Integer recipient_id,
+        Optional<Integer> recipientId,
         
         @NotNull(message = "O objeto é obrigatório")
         @NotBlank(message = "Não pode ser composta apenas de espaços")
