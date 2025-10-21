@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.AllocateWorkstationDTO;
 import com.example.demo.controller.dto.NewIslandDTO;
-import com.example.demo.domain.IslandService;
+import com.example.demo.application.IslandService;
 import com.example.demo.repository.entity.Island;
 
 
@@ -23,9 +23,7 @@ import com.example.demo.repository.entity.Island;
 public class IslandController {
     private IslandService islandService;
 
-    public IslandController(
-        IslandService islandService
-    ) {
+    public IslandController(IslandService islandService) {
         this.islandService = islandService;
     }
 

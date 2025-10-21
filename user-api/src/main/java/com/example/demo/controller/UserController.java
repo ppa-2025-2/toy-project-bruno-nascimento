@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.NewUserDTO;
-import com.example.demo.domain.UserService;
+import com.example.demo.domain.UserBusiness;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.entity.User;
 
@@ -22,17 +22,17 @@ import com.example.demo.repository.entity.User;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    private UserService userBusiness;
+    private UserBusiness userBusiness;
     private UserRepository userRepository;
 
     public UserController(
-            UserService userBusiness,
+            UserBusiness userBusiness,
             UserRepository userRepository
         ) {
         this.userBusiness = userBusiness;
         this.userRepository = userRepository;
     }
-    
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
     public void newUser(@RequestBody NewUserDTO newUser) {

@@ -1,40 +1,28 @@
 package com.example.demo.domain;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+
 import org.springframework.validation.annotation.Validated;
 
 import com.example.demo.controller.dto.NewUserDTO;
-import com.example.demo.domain.exceptions.NotFoundException;
-import com.example.demo.repository.IslandRepository;
+import com.example.demo.domain.stereotype.Business;
+
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.entity.Island;
 import com.example.demo.repository.entity.Profile;
 import com.example.demo.repository.entity.Role;
 import com.example.demo.repository.entity.User;
-import com.example.demo.repository.entity.Workstation;
 
-import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 
-// Spring -> possui um container de Injeção de Dependências
 
-// estereótipo
-@Service // Domain, DomainService, Service, UseCase
+@Business
 @Validated
-public class UserService {
-
-    private final IslandRepository islandRepository;
-
-    @SuppressWarnings("unused")
-    private final EntityManager em;
+public class UserBusiness {
 
     private final BCryptPasswordEncoder passwordEncoder =
         new BCryptPasswordEncoder();
@@ -42,16 +30,12 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final Set<String> defaultRoles;
 
-    public UserService(
-        IslandRepository islandRepository,
-        EntityManager em,
+    public UserBusiness(
         UserRepository userRepository,
         RoleRepository roleRepository,
         @Value("${app.user.default.roles}")
         Set<String> defaultRoles
     ) {
-        this.islandRepository = islandRepository;
-        this.em = em;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.defaultRoles = defaultRoles;
