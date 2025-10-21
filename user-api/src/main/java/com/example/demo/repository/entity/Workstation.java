@@ -1,5 +1,7 @@
 package com.example.demo.repository.entity;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -13,6 +15,21 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "workstations")
 public class Workstation extends BaseEntity {
+
+    public Workstation(){}
+
+    public Workstation(
+        String id,
+        String specs,
+        Island island
+    ) {
+        LocalDateTime now=LocalDateTime.now();
+        this.id = id;
+        this.specs=specs;
+        this.island=island;
+        this.createdAt=now;
+        this.updatedAt=now;
+    }
 
     @Id
     @Column(nullable = false)
@@ -97,8 +114,4 @@ public class Workstation extends BaseEntity {
             return false;
         return true;
     }
-
-    // equals e o hashCode
-    // CTRL+P, CTRL+SHIFT+P, CTRL+ESPAÇO, CTRL+. (code assist)
-
 }

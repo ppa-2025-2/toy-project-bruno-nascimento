@@ -11,7 +11,7 @@ Esse IslandService fará toda a lógica (ou seja, não há distinção se é um 
 [X] - Manter o IslandService como um ApplicationService e a lógica especificamente é para ser realizada em um DomainService, ambos para Island.
 Crie pacotes para separar essas camadas.
 
-[ ] - Manter o IslandService como um ApplicationService, que permite buscar e no fim persistir,
+[X] - Manter o IslandService como um ApplicationService, que permite buscar e no fim persistir,
 mas a lógica de alocação do usuário ficará nas entidades island e workstation.
 Isso é uma abordagem domain drive.
 
