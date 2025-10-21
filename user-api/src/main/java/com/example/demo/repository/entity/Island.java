@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +38,7 @@ public class Island extends BaseEntity {
         CIRCULAR(8); // 4
 
         private final int placements;
-        
+
         public int getPlacements() {
             return placements;
         }
@@ -58,10 +60,11 @@ public class Island extends BaseEntity {
     @Column(nullable = false)
     private Disposition disposition;
 
-    @OneToMany(mappedBy = "island", 
+    @OneToMany(mappedBy = "island",
         cascade = CascadeType.ALL,
         fetch = FetchType.LAZY,
         orphanRemoval = true)
+    @JsonManagedReference
     private Set<Workstation> workstations = new HashSet<>();
 
     public void removeWorkstations(Predicate<Workstation> predicate) {
@@ -104,11 +107,11 @@ public class Island extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Island [id=" + id 
-        + ", description=" + description 
-        + ", disposition=" + disposition 
-        + ", createdAt=" + createdAt 
-        + ", updatedAt=" + updatedAt 
+        return "Island [id=" + id
+        + ", description=" + description
+        + ", disposition=" + disposition
+        + ", createdAt=" + createdAt
+        + ", updatedAt=" + updatedAt
         + "]";
     }
 
@@ -123,5 +126,5 @@ public class Island extends BaseEntity {
                 .ifPresent(w -> w.setUser(user));
     }
 
-    
+
 }

@@ -37,3 +37,40 @@ Content-Type: application/json
     ],
     "company": "potato inc"
 }
+
+
+### Post an Island
+POST /api/v1/islands HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "description": "Main assembly island",
+  "disposition": "RECTANGLE",
+  "workstations": [
+    {
+      "specs": "Welding station with robotic arm"
+    },
+    {
+      "specs": "Quality inspection workstation"
+    },
+    {
+      "specs": "Packaging and labeling area"
+    }
+  ]
+}
+
+### Get Island by ID
+GET /api/v1/islands/1 HTTP/1.1
+Host: localhost:8080
+Accept: application/json
+
+
+### Assign a User to available Workstation in an Island
+PATCH /api/v1/islands/workstations/allocate-available HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "userId": 1
+}

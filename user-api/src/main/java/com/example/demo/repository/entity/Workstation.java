@@ -1,5 +1,8 @@
 package com.example.demo.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -18,8 +21,10 @@ public class Workstation extends BaseEntity {
     @Column(nullable = false)
     private String specs;
 
+
     @ManyToOne
     @JoinColumn(name = "island_id")
+    @JsonBackReference
     private Island island;
 
     @ManyToOne
@@ -63,7 +68,7 @@ public class Workstation extends BaseEntity {
         return "Workstation [createdAt=" + createdAt
             + ", updatedAt=" + updatedAt
             + ", id=" + id
-            + ", specs=" + specs    
+            + ", specs=" + specs
             + ", island=" + island
             + "]";
     }
@@ -95,5 +100,5 @@ public class Workstation extends BaseEntity {
 
     // equals e o hashCode
     // CTRL+P, CTRL+SHIFT+P, CTRL+ESPAÇO, CTRL+. (code assist)
-    
+
 }
